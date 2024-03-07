@@ -1,0 +1,19 @@
+<!-- delete_activity_confirmation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Activity Confirmation</title>
+</head>
+<body>
+    <h2>Delete Activity Confirmation</h2>
+    <p>Are you sure you want to delete the following activity?</p>
+    <p><strong>Name:</strong> {{ activity.name }}</p>
+    <p><strong>Description:</strong> {{ activity.description }}</p>
+    <form action="{% url 'delete_activity' activity.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+        <a href="{% url 'activity_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

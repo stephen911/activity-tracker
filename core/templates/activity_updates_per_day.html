@@ -1,0 +1,55 @@
+<!-- activity_updates_per_day.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Updates per Day</title>
+</head>
+<body>
+    <h1>Activity Updates per Day</h1>
+    {% for activity in activities_with_updates %}
+        <h2>{{ activity.name }}</h2>
+        <ul>
+            {% for update in activity.activityupdate_set.all %}
+                <li>{{ update.updated_at|date:"Y-m-d H:i:s" }} - {{ update.status }} - {{ update.remark }} - {{update.updated_by.username}}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
+
+{% comment %} <!-- update_activity_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Activities</title>
+</head>
+<body>
+    <h2>Update Activities</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>Status</th>
+                <th>Remark</th>
+                <th>Updated By</th>
+                <th>Updated At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity_update in activity_updates %}
+                <tr>
+                    <td>{{ activity_update.activity.name }}</td>
+                    <td>{{ activity_update.status }}</td>
+                    <td>{{ activity_update.remark }}</td>
+                    <td>{{ activity_update.updated_by.username }}</td>
+                    <td>{{ activity_update.updated_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html> {% endcomment %}
+

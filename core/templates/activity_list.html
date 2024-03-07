@@ -1,0 +1,79 @@
+<!-- activity_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Confirmation Dialog</title>
+    <script>
+        function confirmDelete(activityId) {
+            var result = confirm("Are you sure you want to delete this activity?");
+            if (result) {
+                // If user clicked "Yes" (OK), proceed with deletion
+                document.getElementById("delete-form-" + activityId).submit();
+            } else {
+                // If user clicked "No" (Cancel), do nothing
+                return false;
+            }
+        }
+    </script>
+  </head>
+  <body>
+    <a href="{% url 'logout' %}">Logout</a>
+    <ul>
+      {% for activity in activities %}
+      <li>{{ activity.name }}</li>
+      <ul>
+        {% for update in activity.activityupdate_set.all %}
+        <li>
+          {{ update.status }} - {{ update.remark }} - {{ update.updated_at }} -
+          {{ update.updated_by.username }}
+        </li>
+        {% endfor %}
+      </ul>
+      <li>Status: {{ activity.status }}</li>
+      <!-- Display status -->
+      <li>Comment: {{ activity.comment }}</li>
+      <!-- Display comment -->
+      <form
+        method="post"
+        action="{% url 'update_activity' activity.id %}"
+        style="display: inline"
+      >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+      {% comment %}
+      <form
+        method="post"
+        action="{% url 'delete_activity' activity.id %}"
+        style="display: inline"
+      >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+      {% endcomment %}
+
+      <form
+        id="delete-form"
+        action="{% url 'delete_activity' activity.id %}"
+        method="post"
+      >
+        {% csrf_token %}
+        <input type="hidden" name="activity_id" value="{{ activity.id }}" />
+        <button type="button" onclick="confirmDelete({{ activity.id }})">
+          Delete
+        </button>
+      </form>
+      {% endfor %}
+    </ul>
+
+    <a href="{% url 'create_activity' %}" class="btn btn-primary"
+      >Create Activity</a
+    >
+
+    <a href="{% url 'activity_updates_per_day' %}">Activity updates per day</a>
+
+    <a href="{% url 'activity_history_report' %}">Activity_history_report</a>
+  </body>
+</html>
